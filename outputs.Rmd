@@ -1,0 +1,267 @@
+---
+title: "flextable package"
+subtitle: "outputs"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: ['default', 'static/ardata-remark.css']
+---
+
+---
+
+## R Markdown output
+
+
+````{r, eval = TRUE, echo = FALSE}
+library(magrittr)
+library(officer)
+library(flextable)
+
+x <- data.frame(
+  output = c("rmarkdown::html_*", "rmarkdown::word_document", "rmarkdown::powerpoint_presentation", "rmarkdown::pdf_document", "pagedown::html_paged"),
+  #pandoc = c(">= 1.12", ">= 2.0", ">= 2.4", ">= 1.12", ">= 2.0"),
+  comment = c("Any HTML output is supported", rep("Rendered tables are editable", 2), "Rendered as an image", "Our prefered solution to produce PDF")
+)
+
+pre <- function(x, i = NULL, j = NULL, part = "body") {
+  if (!inherits(x, "flextable")) 
+    stop("theme_box supports only flextable objects.")
+  x <- style(
+    x, 
+    i = i, 
+    j = j, 
+    part = part, 
+    pr_t = fp_text(
+      font.family = "Courier", 
+      shading.color = "#EFEFEF",
+      color = "#23527c"
+    )
+  )
+  x
+}
+
+theme_outputs <- function(x) {
+  if (!inherits(x, "flextable")) 
+    stop("theme_box supports only flextable objects.")
+  x <- border_remove(x) %>%
+    font(part = "all", fontname = "Roboto") %>%
+    style(part = "header", pr_t = fp_text(font.size = 12, bold = TRUE)) %>%
+    border_inner_h(part = "body", border = fp_border(color = "#dddddd", width = 1)) %>%
+    hline_bottom(part = "header", border = fp_border(color = "#dddddd", width = 2)) %>%
+    set_header_labels(values = c(output = "R Markdown output")) %>%
+    align(j = ~ comment, align = "center") %>%
+    pre(j = ~ output)
+  x
+}
+
+flextable(x[1,]) %>%
+  theme_outputs()
+````
+
+.row[
+
+.col-xs-4[
+
+</br>
+
+<pre>
+<code class="r hljs remark-code">---
+title: "flextable to HTML"
+output:
+  <strong>html_document</strong>
+---
+ 
+`r ''````{r}
+ft <- flextable(mtcars) %>%
+ theme_doc
+ft
+```
+</code>
+</pre>
+
+]
+
+.col-xs-8[
+
+![](./static/img/output_html.gif)
+
+]
+
+]
+
+
+---
+
+## R Markdown output
+
+````{r, eval = TRUE, echo = FALSE}
+flextable(x[1:2,]) %>%
+  theme_outputs()
+````
+
+.row[
+
+.col-xs-4[
+
+</br>
+
+<pre>
+<code class="r hljs remark-code">---
+title: "flextable to docx"
+output:
+  <strong>word_document</strong>
+---
+ 
+`r ''````{r}
+ft <- flextable(swiss) %>% 
+  theme_tron_legacy() %>%
+  autofit()
+ft
+```
+</code>
+</pre>
+
+]
+
+.col-xs-8[
+
+![](./static/img/output_docx.gif)
+
+]
+
+]
+
+
+---
+
+## R Markdown output
+
+````{r, eval = TRUE, echo = FALSE}
+flextable(x[1:3,]) %>%
+  theme_outputs()
+````
+
+.row[
+
+.col-xs-4[
+
+</br>
+
+<pre>
+<code class="r hljs remark-code">---
+title: "flextable to pptx"
+output:
+  <strong>powerpoint_presentation</strong>
+---
+ 
+`r ''````{r}
+ft <- flextable(longley) %>%
+  theme_box() %>%
+  autofit()
+ft 
+```
+</code>
+</pre>
+
+]
+
+.col-xs-8[
+
+![](./static/img/output_pptx.gif)
+
+
+]
+]
+
+
+---
+
+## R Markdown output
+
+````{r, eval = TRUE, echo = FALSE}
+flextable(x[1:4,]) %>%
+  theme_outputs()
+````
+
+.row[
+
+.col-xs-4[
+
+</br>
+
+<pre>
+<code class="r hljs remark-code">---
+title: "flextable to pdf"
+output:
+  <strong>pdf_document</strong>
+---
+ 
+`r ''````{r}
+ft <- flextable(head(infert)) %>%
+  theme_alafoli()
+ft 
+```
+</code>
+</pre>
+
+]
+
+.col-xs-8[
+
+![](./static/img/output_pdf.png)
+
+]
+
+]
+
+
+---
+
+## R Markdown output
+
+````{r, eval = TRUE, echo = FALSE}
+flextable(x[1:5,]) %>%
+  theme_outputs()
+````
+
+.row[
+
+.col-xs-6[
+
+
+<pre>
+<code class="r hljs remark-code">---
+title: "flextable to a Multi-page HTML Document"
+output:
+  <strong>pagedown::html_paged:</strong>
+    self_contained: true
+---
+ 
+flextable 1
+
+`r ''````{r}
+ft <- flextable(head(Theoph)) %>%
+  theme_vader()
+ft 
+```
+
+
+flextable 2
+
+`r ''````{r}
+ft <- flextable(head(warpbreaks)) %>%
+  theme_vanilla()
+ft 
+```
+</code>
+</pre>
+
+]
+
+.col-xs-6[
+
+![](./static/img/output_pagedown.gif)
+
+]
+
+]

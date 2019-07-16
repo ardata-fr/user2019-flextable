@@ -1,0 +1,89 @@
+---
+title: "flextable package"
+subtitle: "part compose example"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: ['default', 'static/ardata-remark.css']
+---
+
+---
+
+## flextable in Shiny
+
+
+.marker-writting[
+Show a flextable in a Shiny application : too easy !
+]
+
+.row[
+
+.col-xs-6[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">library(shiny)
+library(flextable)
+
+datasets <- c("iris", "mtcars", "airquality", 
+  "quakes", "CO2", "rock", "sleep")
+
+ui <- fluidPage(
+  
+  titlePanel("Show a flextable in Shiny application"),
+  
+  sidebarLayout(
+    sidebarPanel(
+      selectInput("SI_dataset", 
+        label = "Choose dataset", choices = datasets)
+    ),
+    mainPanel(
+      <strong>uiOutput</strong>("dataset_flextable")
+    )
+  )
+)
+
+server <- function(input, output) {
+  
+  output$<strong>dataset_flextable</strong> <- <strong>renderUI</strong>({
+    req(input$SI_dataset)
+    
+    get(input$SI_dataset) %>%
+      head(n = 10) %>%
+      flextable() %>%
+      theme_booktabs() %>% 
+      <strong>htmltools_value</strong>()
+  })
+}
+
+shinyApp(ui = ui, server = server)
+</code></pre>
+
+]
+
+.col-xs-6[
+
+![](./static/img/shiny_demo.gif)
+
+]
+
+]
+
+---
+
+</br></br></br></br></br></br>
+<img src = "./static/img/dontlikecoding.gif" class = "img_center"/>
+
+---
+
+</br></br></br></br></br></br>
+<img src = "./static/img/fall_asleep.gif" class = "img_center"/>
+
+---
+
+## flextableUI 
+
+---
+
+## flextableUI
+
+![](./static/img/flextableUI_demo.gif)

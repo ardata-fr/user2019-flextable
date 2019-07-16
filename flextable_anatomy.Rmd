@@ -1,0 +1,47 @@
+---
+title: "flextable package"
+subtitle: "a grammar to produce tabular reporting from R"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: ['default', 'static/ardata-remark.css']
+---
+
+---
+background-image: url()
+
+## flextable anatomy
+
+
+
+.row[
+
+.marker-writting[
+A flextable object is composed of 3 parts : header / body / footer 
+]
+
+.col-xs-6[
+
+![](./static/img/flextable_layout.svg)
+]
+
+.col-xs-1[
+
+]
+
+.col-xs-5[
+
+.marker-writting[
+Example : 
+]
+
+
+```{r echo=FALSE}
+std_border <- fp_border(width = 4, color = "white")
+flextable(head(iris[,1:2], n = 4)) %>%
+  add_footer_lines("only iris[1:4,1:2] shown") %>% 
+  theme_doc()
+
+```
+]
+]

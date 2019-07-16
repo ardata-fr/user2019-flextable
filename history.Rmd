@@ -1,0 +1,32 @@
+---
+title: "flextable package"
+subtitle: "a grammar to produce tabular reporting from R"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: ['default', 'static/ardata-remark.css']
+---
+
+---
+
+# History
+
+.linkedul[
+
+* **2017-03-28**
+  
+  first realease on CRAN, support officer and HTML R Markdown.
+  Idea was to replace `ReporteRs::FlexTable`.
+* **2017-10-30 <i class="far fa-smile"></i>**
+  
+  Merge pull request #37 from mnazarov/master.
+  Added functionality to insert flextable's in R Markdown for docx output.
+* **2017-11-22**
+
+  R Markdown support for pptx output.
+
+* **2019-01-29**
+
+  Refactor internals and add `flextable::compose` (for complex formatting)
+
+]

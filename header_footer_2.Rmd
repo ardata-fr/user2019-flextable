@@ -1,0 +1,877 @@
+---
+title: "flextable package"
+subtitle: "a grammar to produce tabular reporting from R"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: ['default', 'static/ardata-remark.css']
+---
+
+---
+
+```{r, eval = TRUE, echo = FALSE}
+library(magrittr)
+library(flextable)
+library(officer)
+theme_doc <- function(x) {
+  if (!inherits(x, "flextable")) 
+    stop("theme_box supports only flextable objects.")
+  x <- border_remove(x)
+  std_border <- fp_border(width = 4, color = "white")
+  
+  x <- align(x, align = "center", part = "all")
+  x <- font(x, fontname = "Courier", part = "all")
+  x <- bg(x, bg = "#eb5555", part = "header")
+  x <- bg(x, bg = "#475f77", part = "body")
+  x <- bg(x, bg = "#1bbbda", part = "footer")
+  x <- color(x, color = "white", part = "all")
+  x <- fontsize(x, size = 13, part = "all")
+  x <- border_outer(x, part="all", border = std_border )
+  x <- border_inner_h(x, border = std_border, part="all")
+  x <- border_inner_v(x, border = std_border, part="all")
+  x <- autofit(x)
+  x
+}
+
+
+theme_doc2 <- function(x) {
+  if (!inherits(x, "flextable")) 
+    stop("theme_box supports only flextable objects.")
+  x <- border_remove(x)
+  x <- theme_doc(x)
+  x <- colformat_num(
+    x = x,
+    col_keys = setdiff(x$col_keys, "Species"),
+    digits = 1
+  )
+  x <- autofit(x)
+  x
+}
+
+misc_formatting <- function(x) {
+  if (!inherits(x, "flextable")) 
+    stop("theme_box supports only flextable objects.")
+  x <- x %>%
+    colformat_num("Wind", digits = 1) %>%
+    theme_alafoli() %>%
+    bold(j = "Wind") %>%
+    color(i = ~ Wind > 12, j = "Wind", color = "#17a589") %>%
+    color(i = ~ Wind < 12, j = "Wind", color = "#ca6f1e")
+  x
+}
+```
+
+## Header & Footer
+
+.marker-writting[
+On "header" & "footer" part you can :
+
+* Define a whole data.frame 
+* Add top/bottom lines
+* Use format & layout functions
+
+]
+
+---
+
+## Header & Footer
+
+.marker-writting[
+Define a data.frame as header
+]
+
+![](./static/img/head_df.png)
+
+````{r, eval = FALSE, echo = FALSE}
+# Je garde le code pour créer les images mises dans le SVG ici
+# mais il n'est pas executé dans la présentation
+my_header <- data.frame(
+  col_keys = c("Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width", "Species"), 
+  line1 = c("Sepal", "Sepal", "Petal", "Petal", "Species"), 
+  line2 = c("Length", "Width", "Length", "Width", "Species"),
+  stringsAsFactors = FALSE
+)
+
+# RESULT
+zz <- flextable(head(iris)) %>% 
+  set_header_df(
+    mapping = my_header, 
+    key = "col_keys"
+  ) %>% 
+  merge_v(part = "header") %>% 
+  merge_h(part = "header") %>% 
+  theme_doc()
+
+# HEADER
+zz %>% delete_part("body")
+
+# BODY
+zz %>% delete_part("header")
+
+# RESULT
+zz
+````
+
+---
+
+## Header & Footer
+
+
+.marker-writting[
+Define a data.frame as header and/or footer
+]
+
+.row[
+
+.col-xs-12[
+<pre class = "nomtop nombottom">
+<code class="r remark-code">my_header <- data.frame(
+  <strong>col_keys</strong> = colnames(iris), 
+  line1 = c('Sepal', 'Sepal', 'Petal', 'Petal', 'Species'), 
+  line2 = c('Length', 'Width', 'Length', 'Width', 'Species'),
+  stringsAsFactors = FALSE
+)
+</code></pre>
+]
+
+]
+
+---
+
+## Header & Footer
+
+
+.marker-writting[
+Define a data.frame as header and/or footer
+]
+
+.row[
+
+.col-xs-12[
+<pre class = "nomtop nombottom">
+<code class="r remark-code">my_header <- data.frame(
+  <strong>col_keys</strong> = colnames(iris), 
+  line1 = c('Sepal', 'Sepal', 'Petal', 'Petal', 'Species'), 
+  line2 = c('Length', 'Width', 'Length', 'Width', 'Species'),
+  stringsAsFactors = FALSE
+)
+</code></pre>
+]
+
+]
+
+.row[
+
+.col-xs-4[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">flextable(head(iris)) %>% 
+  theme_doc()
+</code></pre>
+
+]
+
+.col-xs-8[
+
+````{r, echo = FALSE}
+my_header <- data.frame(
+  col_keys = c("Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width", "Species"), 
+  line1 = c("Sepal", "Sepal", "Petal", "Petal", "Species"), 
+  line2 = c("Length", "Width", "Length", "Width", "Species"),
+  stringsAsFactors = FALSE
+)
+
+flextable(head(iris)) %>% 
+  theme_doc2()
+````
+
+]
+
+]
+
+---
+
+## Header & Footer
+
+
+.marker-writting[
+Define a data.frame as header and/or footer
+]
+
+.row[
+
+.col-xs-12[
+<pre class = "nomtop nombottom">
+<code class="r remark-code">my_header <- data.frame(
+  <strong>col_keys</strong> = colnames(iris), 
+  line1 = c('Sepal', 'Sepal', 'Petal', 'Petal', 'Species'), 
+  line2 = c('Length', 'Width', 'Length', 'Width', 'Species'),
+  stringsAsFactors = FALSE
+)
+</code></pre>
+]
+
+]
+
+.row[
+
+.col-xs-4[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">flextable(head(iris)) %>% 
+  theme_doc() %>%
+  <strong>set_header_df</strong>(
+    mapping = my_header, 
+    key = "col_keys"
+  )
+</code></pre>
+
+]
+
+.col-xs-8[
+
+````{r, echo = FALSE}
+flextable(head(iris)) %>% 
+  set_header_df(
+    mapping = my_header, 
+    key = "col_keys"
+  ) %>% 
+  theme_doc2()
+````
+
+]
+
+]
+
+---
+
+## Header & Footer
+
+
+.marker-writting[
+Define a data.frame as header and/or footer
+]
+
+.row[
+
+.col-xs-12[
+<pre class = "nomtop nombottom">
+<code class="r remark-code">my_header <- data.frame(
+  <strong>col_keys</strong> = colnames(iris), 
+  line1 = c('Sepal', 'Sepal', 'Petal', 'Petal', 'Species'), 
+  line2 = c('Length', 'Width', 'Length', 'Width', 'Species'),
+  stringsAsFactors = FALSE
+)
+</code></pre>
+]
+
+]
+
+.row[
+
+.col-xs-4[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">flextable(head(iris)) %>% 
+  theme_doc() %>%
+  <strong>set_header_df</strong>(
+    mapping = my_header, 
+    key = "col_keys"
+  ) %>% 
+  merge_v(part = "header") %>% 
+  merge_h(part = "header")
+</code></pre>
+
+]
+
+.col-xs-8[
+
+````{r, echo = FALSE}
+flextable(head(iris)) %>% 
+  set_header_df(
+    mapping = my_header, 
+    key = "col_keys"
+  ) %>% 
+  merge_v(part = "header") %>% 
+  merge_h(part = "header") %>% 
+  theme_doc2()
+````
+
+]
+
+]
+
+---
+
+## Header & Footer
+
+
+.marker-writting[
+Define a data.frame as header and/or footer
+]
+
+.row[
+
+.col-xs-12[
+<pre class = "nomtop nombottom">
+<code class="r remark-code">my_header <- data.frame(
+  <strong>col_keys</strong> = colnames(iris), 
+  line1 = c('Sepal', 'Sepal', 'Petal', 'Petal', 'Species'), 
+  line2 = c('Length', 'Width', 'Length', 'Width', 'Species'),
+  stringsAsFactors = FALSE
+)
+</code></pre>
+]
+
+]
+
+.row[
+
+.col-xs-4[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">flextable(head(iris)) %>% 
+  theme_doc() %>%
+  <strong>set_header_df</strong>(
+    mapping = my_header, 
+    key = "col_keys"
+  ) %>% 
+  merge_v(part = "header") %>% 
+  merge_h(part = "header") %>%
+  <strong>set_footer_df</strong>(
+    mapping = my_header[, 3:1],
+    key = "col_keys"
+  )
+</code></pre>
+
+]
+
+.col-xs-8[
+
+````{r, echo = FALSE}
+flextable(head(iris)) %>% 
+  set_header_df(
+    mapping = my_header, 
+    key = "col_keys"
+  ) %>% 
+  merge_v(part = "header") %>% 
+  merge_h(part = "header") %>% 
+  set_footer_df(
+    mapping = my_header[,3:1],
+    key = "col_keys"
+  ) %>%
+  theme_doc2()
+````
+
+]
+
+]
+
+---
+
+## Header & Footer
+
+
+.marker-writting[
+Define a data.frame as header and/or footer
+]
+
+.row[
+
+.col-xs-12[
+<pre class = "nomtop nombottom">
+<code class="r remark-code">my_header <- data.frame(
+  <strong>col_keys</strong> = colnames(iris), 
+  line1 = c('Sepal', 'Sepal', 'Petal', 'Petal', 'Species'), 
+  line2 = c('Length', 'Width', 'Length', 'Width', 'Species'),
+  stringsAsFactors = FALSE
+)
+</code></pre>
+]
+
+]
+
+.row[
+
+.col-xs-4[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">flextable(head(iris)) %>% 
+  theme_doc() %>%
+  <strong>set_header_df</strong>(
+    mapping = my_header, 
+    key = "col_keys"
+  ) %>% 
+  merge_v(part = "header") %>% 
+  merge_h(part = "header") %>%
+  <strong>set_footer_df</strong>(
+    mapping = my_header[, 3:1],
+    key = "col_keys"
+  ) %>%
+  merge_v(part = "footer") %>%
+  merge_h(part = "footer)
+</code></pre>
+
+]
+
+.col-xs-8[
+
+````{r, echo = FALSE}
+flextable(head(iris)) %>% 
+  set_header_df(
+    mapping = my_header, 
+    key = "col_keys"
+  ) %>% 
+  merge_v(part = "header") %>% 
+  merge_h(part = "header") %>% 
+  set_footer_df(
+    mapping = my_header[,3:1],
+    key = "col_keys"
+  ) %>%
+  merge_v(part = "footer") %>%
+  merge_h(part = "footer") %>%
+  theme_doc2()
+````
+
+]
+
+]
+
+---
+
+## Header & Footer
+
+
+.marker-writting[
+Add lines on header and footer and apply format functions on them.
+]
+
+.row[
+
+.col-xs-7[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">flextable(head(airquality))
+</code></pre>
+
+]
+
+.col-xs-5[
+
+````{r, echo = FALSE}
+flextable(head(airquality))
+````
+
+]
+]
+
+---
+
+## Header & Footer
+
+
+.marker-writting[
+Add lines on header and footer and apply format functions on them.
+]
+
+.row[
+
+.col-xs-7[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">flextable(head(airquality)) %>%
+  theme_formats()
+</code></pre>
+
+]
+
+.col-xs-5[
+
+````{r, echo = FALSE}
+flextable(head(airquality)) %>%
+  misc_formatting()
+````
+
+]
+]
+
+
+---
+
+## Header & Footer
+
+
+.marker-writting[
+Add lines on header and footer and apply format functions on them.
+]
+
+.row[
+
+.col-xs-7[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">flextable(head(airquality)) %>%
+  theme_formats() %>%
+  <strong>add_footer_lines</strong>(c("Wind > 12", "Wind < 12"))
+</code></pre>
+
+]
+
+.col-xs-5[
+
+````{r, echo = FALSE}
+flextable(head(airquality)) %>%
+  misc_formatting() %>%
+  add_footer_lines(c("Wind > 12", "Wind < 12"))
+````
+
+]
+]
+
+---
+
+## Header & Footer
+
+
+.marker-writting[
+Add lines on header and footer and apply format functions on them.
+]
+
+.row[
+
+.col-xs-7[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">flextable(head(airquality)) %>%
+  theme_formats() %>%
+  <strong>add_footer_lines</strong>(c("Wind > 12", "Wind < 12")) %>%
+  <strong>bold</strong>(part = "footer")
+</code></pre>
+
+]
+
+.col-xs-5[
+
+````{r, echo = FALSE}
+flextable(head(airquality)) %>%
+  misc_formatting() %>%
+  add_footer_lines(c("Wind > 12", "Wind < 12")) %>%
+  bold(part = "footer")
+````
+
+]
+]
+
+---
+
+## Header & Footer
+
+
+.marker-writting[
+Add lines on header and footer and apply format functions on them.
+]
+
+.row[
+
+.col-xs-7[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">flextable(head(airquality)) %>%
+  theme_formats() %>%
+  <strong>add_footer_lines</strong>(c("Wind > 12", "Wind < 12")) %>%
+  <strong>bold</strong>(part = "footer") %>%
+  <strong>italic</strong>(part = "footer")
+</code></pre>
+
+]
+
+.col-xs-5[
+
+````{r, echo = FALSE}
+flextable(head(airquality)) %>%
+  misc_formatting() %>%
+  add_footer_lines(c("Wind > 12", "Wind < 12")) %>%
+  bold(part = "footer") %>%
+  italic(part = "footer")
+````
+
+]
+]
+
+---
+
+## Header & Footer
+
+
+.marker-writting[
+Add lines on header and footer and apply format functions on them.
+]
+
+.row[
+
+.col-xs-7[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">flextable(head(airquality)) %>%
+  theme_formats() %>%
+  <strong>add_footer_lines</strong>(c("Wind > 12", "Wind < 12")) %>%
+  <strong>bold</strong>(part = "footer") %>%
+  <strong>italic</strong>(part = "footer") %>%
+  <strong>align</strong>(align = "right", part = "footer")
+</code></pre>
+
+]
+
+.col-xs-5[
+
+````{r, echo = FALSE}
+flextable(head(airquality)) %>%
+  misc_formatting() %>%
+  add_footer_lines(c("Wind > 12", "Wind < 12")) %>%
+  bold(part = "footer") %>%
+  italic(part = "footer") %>%
+  align(align = "right", part = "footer")
+````
+
+]
+]
+
+---
+
+## Header & Footer
+
+
+.marker-writting[
+Add lines on header and footer and apply format functions on them.
+]
+
+.row[
+
+.col-xs-7[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">flextable(head(airquality)) %>%
+  theme_formats() %>%
+  <strong>add_footer_lines</strong>(c("Wind > 12", "Wind < 12")) %>%
+  <strong>bold</strong>(part = "footer") %>%
+  <strong>italic</strong>(part = "footer") %>%
+  <strong>align</strong>(align = "right", part = "footer") %>%
+  <strong>color</strong>(i = 1, part = "footer", color = "#17a589")
+</code></pre>
+
+]
+
+.col-xs-5[
+
+````{r, echo = FALSE}
+flextable(head(airquality)) %>%
+  misc_formatting() %>%
+  add_footer_lines(c("Wind > 12", "Wind < 12")) %>%
+  bold(part = "footer") %>%
+  italic(part = "footer") %>%
+  align(align = "right", part = "footer") %>%
+  color(i = 1, part = "footer", color = "#17a589")
+````
+
+]
+]
+
+---
+
+## Header & Footer
+
+
+.marker-writting[
+Add lines on header and footer and apply format functions on them.
+]
+
+.row[
+
+.col-xs-7[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">flextable(head(airquality)) %>%
+  theme_formats() %>%
+  <strong>add_footer_lines</strong>(c("Wind > 12", "Wind < 12")) %>%
+  <strong>bold</strong>(part = "footer") %>%
+  <strong>italic</strong>(part = "footer") %>%
+  <strong>align</strong>(align = "right", part = "footer") %>%
+  <strong>color</strong>(i = 1, part = "footer", color = "#17a589") %>%
+  <strong>color</strong>(i = 2, part = "footer", color = "#ca6f1e")
+</code></pre>
+
+]
+
+.col-xs-5[
+
+````{r, echo = FALSE}
+flextable(head(airquality)) %>%
+  misc_formatting() %>%
+  add_footer_lines(c("Wind > 12", "Wind < 12")) %>%
+  bold(part = "footer") %>%
+  italic(part = "footer") %>%
+  align(align = "right", part = "footer") %>%
+  color(i = 1, part = "footer", color = "#17a589") %>%
+  color(i = 2, part = "footer", color = "#ca6f1e")
+````
+
+]
+]
+
+---
+
+## Header & Footer
+
+
+.marker-writting[
+Add lines on header and footer and apply format functions on them.
+]
+
+.row[
+
+.col-xs-7[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">flextable(head(airquality)) %>%
+  theme_formats() %>%
+  <strong>add_footer_lines</strong>(c("Wind > 12", "Wind < 12")) %>%
+  <strong>bold</strong>(part = "footer") %>%
+  <strong>italic</strong>(part = "footer") %>%
+  <strong>align</strong>(align = "right", part = "footer") %>%
+  <strong>color</strong>(i = 1, part = "footer", color = "#17a589") %>%
+  <strong>color</strong>(i = 2, part = "footer", color = "#ca6f1e") %>%
+  <strong>add_header_lines</strong>(
+    values = c("Daily air quality measurements in New York, 
+      May to September 1973."), 
+    top = TRUE
+  )
+</code></pre>
+
+]
+
+.col-xs-5[
+
+````{r, echo = FALSE}
+flextable(head(airquality)) %>%
+  misc_formatting() %>%
+  add_footer_lines(c("Wind > 12", "Wind < 12")) %>%
+  bold(part = "footer") %>%
+  italic(part = "footer") %>%
+  align(align = "right", part = "footer") %>%
+  color(i = 1, part = "footer", color = "#17a589") %>%
+  color(i = 2, part = "footer", color = "#ca6f1e") %>%
+  add_header_lines(
+    values = c("Daily air quality measurements in New York, May 1973."), top = TRUE
+  )
+````
+
+]
+]
+
+---
+
+## Header & Footer
+
+
+.marker-writting[
+Add lines on header and footer and apply format functions on them.
+]
+
+.row[
+
+.col-xs-7[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">flextable(head(airquality)) %>%
+  theme_formats() %>%
+  <strong>add_footer_lines</strong>(c("Wind > 12", "Wind < 12")) %>%
+  <strong>bold</strong>(part = "footer") %>%
+  <strong>italic</strong>(part = "footer") %>%
+  <strong>align</strong>(align = "right", part = "footer") %>%
+  <strong>color</strong>(i = 1, part = "footer", color = "#17a589") %>%
+  <strong>color</strong>(i = 2, part = "footer", color = "#ca6f1e") %>%
+  <strong>add_header_lines</strong>(
+    values = c("Daily air quality measurements in New York, 
+      May to September 1973."), 
+    top = TRUE
+  ) %>%
+  <strong>italic</strong>(part = "header")
+</code></pre>
+
+]
+
+.col-xs-5[
+
+````{r, echo = FALSE}
+flextable(head(airquality)) %>%
+  misc_formatting() %>%
+  add_footer_lines(c("Wind > 12", "Wind < 12")) %>%
+  bold(part = "footer") %>%
+  italic(part = "footer") %>%
+  align(align = "right", part = "footer") %>%
+  color(i = 1, part = "footer", color = "#17a589") %>%
+  color(i = 2, part = "footer", color = "#ca6f1e") %>%
+  add_header_lines(
+    values = c("Daily air quality measurements in New York, May 1973."), top = TRUE
+  ) %>%
+  italic(part = "header")
+````
+
+]
+]
+
+
+---
+
+## Header & Footer
+
+
+.marker-writting[
+Add lines on header and footer and apply format functions on them.
+]
+
+.row[
+
+.col-xs-7[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">flextable(head(airquality)) %>%
+  theme_formats() %>%
+  <strong>add_footer_lines</strong>(c("Wind > 12", "Wind < 12")) %>%
+  <strong>bold</strong>(part = "footer") %>%
+  <strong>italic</strong>(part = "footer") %>%
+  <strong>align</strong>(align = "right", part = "footer") %>%
+  <strong>color</strong>(i = 1, part = "footer", color = "#17a589") %>%
+  <strong>color</strong>(i = 2, part = "footer", color = "#ca6f1e") %>%
+  <strong>add_header_lines</strong>(
+    values = c("Daily air quality measurements in New York, 
+      May to September 1973."), 
+    top = TRUE
+  ) %>%
+  <strong>italic</strong>(part = "header") %>%
+  <strong>fontsize</strong>(i = 1, part = "header", size = 8)
+</code></pre>
+
+]
+
+.col-xs-5[
+
+````{r, echo = FALSE}
+flextable(head(airquality)) %>%
+  misc_formatting() %>%
+  add_footer_lines(c("Wind > 12", "Wind < 12")) %>%
+  bold(part = "footer") %>%
+  italic(part = "footer") %>%
+  align(align = "right", part = "footer") %>%
+  color(i = 1, part = "footer", color = "#17a589") %>%
+  color(i = 2, part = "footer", color = "#ca6f1e") %>%
+  add_header_lines(
+    values = c("Daily air quality measurements in New York, May 1973."), top = TRUE
+  ) %>%
+  italic(part = "header") %>%
+  fontsize(i = 1, part = "header", size = 8)
+````
+
+]
+]
+

@@ -1,0 +1,182 @@
+---
+title: "flextable package"
+subtitle: "a grammar to produce tabular reporting from R"
+date: "`r Sys.Date()`"
+author: "Quentin Fazilleau"
+output:
+  xaringan::moon_reader:
+    css: ['default', 'static/ardata-remark.css']
+    chakra: static/remark-latest.min.js
+---
+
+```{r setup, include=FALSE, message = FALSE, warning = FALSE}
+knitr::opts_chunk$set(echo = TRUE, dev.args=list(bg='transparent', pointsize=10))
+library(flextable)
+library(officer)
+library(magrittr)
+```
+
+
+````{r, eval = TRUE, echo = FALSE}
+# Quelques functions que j'aurais besoin durant la présentation
+# Je defini un theme pour la presentation
+theme_doc <- function(x) {
+  if (!inherits(x, "flextable")) 
+    stop("theme_box supports only flextable objects.")
+  x <- border_remove(x)
+  std_border <- fp_border(width = 4, color = "white")
+  
+  x <- align(x, align = "center", part = "all")
+  x <- font(x, fontname = "Courier", part = "all")
+  x <- bg(x, bg = "#eb5555", part = "header")
+  x <- bg(x, bg = "#475f77", part = "body")
+  x <- bg(x, bg = "#1bbbda", part = "footer")
+  x <- color(x, color = "white", part = "all")
+  x <- fontsize(x, size = 13, part = "all")
+  x <- border_outer(x, part="all", border = std_border )
+  x <- border_inner_h(x, border = std_border, part="all")
+  x <- border_inner_v(x, border = std_border, part="all")
+  x <- autofit(x)
+  x
+}
+
+
+theme_doc2 <- function(x) {
+  if (!inherits(x, "flextable")) 
+    stop("theme_box supports only flextable objects.")
+  x <- border_remove(x)
+  x <- theme_doc(x)
+  x <- colformat_num(
+    x = x,
+    col_keys = setdiff(x$col_keys, "Species"),
+    digits = 1
+  )
+  x <- autofit(x)
+  x
+}
+
+theme_atp <- function(x) {
+  if (!inherits(x, "flextable")) 
+    stop("theme_box supports only flextable objects.")
+  blue_roboto <- fp_text(
+    color = "#00aeef",
+    font.family = "Roboto",
+    font.size = 12
+  )
+  border_remove(x) %>%
+  style(
+    part = "header", 
+    pr_t = blue_roboto
+  ) %>%
+  set_formatter( 
+    Percentage = function(x) paste0(sprintf("%.02f", x), "%")
+  ) %>%
+  colformat_int(
+    col_keys = setdiff(x$col_keys, c("Rank", "Player", "Percentage", "head", "link", "flag")), 
+    big.mark = ","
+  ) %>%
+  border_inner(part = "body", border = fp_border(color = "#f1f1f1")) %>%
+  align(
+    j = setdiff(x$col_keys, "Player"),
+    align = "center"
+  ) %>%
+  padding(j = "Player", padding.bottom = 0) %>%
+  bg(part = "header", bg = "#f1f1f1") %>%
+  add_header_lines(values = "Career Service Games Won On Grass From All Countries") %>%
+  color(i = 1, color = "#1f2223", part = "header") %>%
+  bold(i = 1, bold = TRUE, part = "header") %>%
+  fontsize(i = 1, size = 12, part = "header") %>%
+  add_footer_lines(values = c("", "Source : https://www.atptour.com/en/stats/")) %>%
+  footnote(
+    j = 5, ref_symbols = c("*"),
+    value = as_paragraph(
+      c("Matches before Wimbledon 2019 starts")
+    ), 
+    part = "header"
+  ) %>%
+  italic(part = "footer") %>%
+  width(j = ~ Player, width = 3)
+}
+
+misc_formatting <- function(x) {
+  if (!inherits(x, "flextable")) 
+    stop("theme_box supports only flextable objects.")
+  x <- x %>%
+    colformat_num("Wind", digits = 1) %>%
+    theme_alafoli() %>%
+    bold(j = "Wind") %>%
+    color(i = ~ Wind > 12, j = "Wind", color = "#17a589") %>%
+    color(i = ~ Wind < 12, j = "Wind", color = "#ca6f1e")
+  x
+}
+
+pre <- function(x, i = NULL, j = NULL, part = "body") {
+  if (!inherits(x, "flextable")) 
+    stop("theme_box supports only flextable objects.")
+  x <- style(
+    x, 
+    i = i, 
+    j = j, 
+    part = part, 
+    pr_t = fp_text(
+      font.family = "Courier", 
+      shading.color = "#EFEFEF",
+      color = "#23527c"
+    )
+  )
+  x
+}
+
+theme_outputs <- function(x) {
+  if (!inherits(x, "flextable")) 
+    stop("theme_box supports only flextable objects.")
+  x <- border_remove(x) %>%
+    font(part = "all", fontname = "Roboto") %>%
+    style(part = "header", pr_t = fp_text(font.size = 12, bold = TRUE)) %>%
+    border_inner_h(part = "body", border = fp_border(color = "#dddddd", width = 1)) %>%
+    hline_bottom(part = "header", border = fp_border(color = "#dddddd", width = 2)) %>%
+    set_header_labels(values = c(output = "R Markdown output", pandoc = "pandoc version")) %>%
+    align(j = ~ comment, align = "center") %>%
+    pre(j = ~ output)
+  x
+}
+````
+
+```{r child = 'motivations.Rmd'}
+```
+
+```{r child = 'history.Rmd'}
+```
+
+```{r child = 'flextable_anatomy.Rmd'}
+```
+
+```{r child = 'selectors.Rmd'}
+```
+
+```{r child = 'format.Rmd'}
+```
+
+```{r child = 'cell_merging.Rmd'}
+```
+
+```{r child = 'header_footer.Rmd'}
+```
+
+```{r child = 'compose_presentation.Rmd'}
+```
+
+```{r child = 'compose_example.Rmd'}
+```
+
+```{r child = 'outputs.Rmd'}
+```
+
+```{r child = 'shiny.Rmd'}
+```
+
+---
+
+
+</br></br></br>
+<img src = "./static/img/flextable.png" class = "img_center"/>

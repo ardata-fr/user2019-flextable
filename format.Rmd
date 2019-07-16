@@ -1,0 +1,627 @@
+---
+title: "flextable package"
+subtitle: "a grammar to produce tabular reporting from R"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: ['default', 'static/ardata-remark.css']
+---
+
+---
+
+## Formats
+
+.marker-writting[
+Remember that any formatting function can be coupled with selectors !
+]
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">flextable(x) %>%
+  <em>any_format_function</em>(<strong>i = ~ ..., j = ~ ...</strong>)
+</code></pre>
+
+---
+
+## Formats
+
+
+.row[
+
+.col-xs-12[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">x <- head(quakes) %>% flextable() %>% theme_box()
+</code></pre>
+
+```{r, echo = FALSE}
+x <- head(quakes) %>% flextable() %>% theme_box()
+inside  <- fp_border(color = "gray")
+outside <- fp_border(color = "orange", width = 2)
+cell    <- fp_border(color = "red", style = "dotted", width = 3)
+````
+
+]
+
+]
+
+.row[
+
+.col-xs-6[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">x
+</code></pre>
+
+]
+
+.col-xs-6[
+
+```{r, echo = FALSE}
+x
+```
+
+]
+
+]
+
+---
+
+## Formats
+
+
+.row[
+
+.col-xs-12[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">x <- head(quakes) %>% flextable() %>% theme_box()
+</code></pre>
+
+```{r, echo = FALSE}
+x <- head(quakes) %>% flextable() %>% theme_box()
+````
+
+]
+
+]
+
+.row[
+
+.col-xs-6[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">x %>%
+  <strong>bold</strong>(i = 2)
+</code></pre>
+
+]
+
+.col-xs-6[
+
+```{r, echo = FALSE}
+x %>%
+  bold(i = 2)
+```
+
+]
+
+]
+
+---
+
+## Formats
+
+
+.row[
+
+.col-xs-12[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">x <- head(quakes) %>% flextable() %>% theme_box()
+</code></pre>
+
+```{r, echo = FALSE}
+x <- head(quakes) %>% flextable() %>% theme_box()
+````
+
+]
+
+]
+
+.row[
+
+.col-xs-6[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">x %>%
+  <strong>bold</strong>(i = 2) %>%
+  <strong>italic</strong>(i = 2)
+</code></pre>
+
+]
+
+.col-xs-6[
+
+```{r, echo = FALSE}
+x %>%
+  bold(i = 2) %>%
+  italic(i = 2)
+```
+
+]
+
+]
+
+---
+
+## Formats
+
+
+.row[
+
+.col-xs-12[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">x <- head(quakes) %>% flextable() %>% theme_box()
+</code></pre>
+
+```{r, echo = FALSE}
+x <- head(quakes) %>% flextable() %>% theme_box()
+````
+
+]
+
+]
+
+.row[
+
+.col-xs-6[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">x %>%
+  <strong>bold</strong>(i = 2) %>%
+  <strong>italic</strong>(i = 2) %>%
+  <strong>font</strong>(i = 2, fontname = "Times")
+</code></pre>
+
+]
+
+.col-xs-6[
+
+```{r, echo = FALSE}
+x %>%
+  bold(i = 2) %>%
+  italic(i = 2) %>%
+  font(i = 2, fontname = "Times")
+```
+
+]
+
+]
+
+
+---
+
+## Formats
+
+
+.row[
+
+.col-xs-12[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">x <- head(quakes) %>% flextable() %>% theme_box()
+</code></pre>
+
+```{r, echo = FALSE}
+x <- head(quakes) %>% flextable() %>% theme_box()
+````
+
+]
+
+]
+
+.row[
+
+.col-xs-6[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">x %>%
+  <strong>bold</strong>(i = 2) %>%
+  <strong>italic</strong>(i = 2) %>%
+  <strong>font</strong>(i = 2, fontname = "Times") %>%
+  <strong>fontsize</strong>(i = 2, size = 14)
+</code></pre>
+
+]
+
+.col-xs-6[
+
+```{r, echo = FALSE}
+x %>%
+  bold(i = 2) %>%
+  italic(i = 2) %>%
+  font(i = 2, fontname = "Times") %>%
+  fontsize(i = 2, size = 14)
+```
+
+]
+
+]
+
+---
+
+## Formats
+
+
+.row[
+
+.col-xs-12[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">x <- head(quakes) %>% flextable() %>% theme_box()
+</code></pre>
+
+```{r, echo = FALSE}
+x <- head(quakes) %>% flextable() %>% theme_box()
+````
+
+]
+
+]
+
+.row[
+
+.col-xs-6[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">x %>%
+  <strong>bold</strong>(i = 2) %>%
+  <strong>italic</strong>(i = 2) %>%
+  <strong>font</strong>(i = 2, fontname = "Times") %>%
+  <strong>fontsize</strong>(i = 2, size = 14) %>%
+  <strong>color</strong>(i = 2, color = "red)
+</code></pre>
+
+]
+
+.col-xs-6[
+
+```{r, echo = FALSE}
+x %>%
+  bold(i = 2) %>%
+  italic(i = 2) %>%
+  font(i = 2, fontname = "Times") %>%
+  fontsize(i = 2, size = 14) %>%
+  color(i = 2, color = "red")
+```
+
+]
+
+]
+
+---
+
+## Formats
+
+
+.row[
+
+.col-xs-12[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">x <- head(quakes) %>% flextable() %>% theme_box()
+</code></pre>
+
+```{r, echo = FALSE}
+x <- head(quakes) %>% flextable() %>% theme_box()
+````
+
+]
+
+]
+
+.row[
+
+.col-xs-6[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">x %>%
+  <strong>bold</strong>(i = 2) %>%
+  <strong>italic</strong>(i = 2) %>%
+  <strong>font</strong>(i = 2, fontname = "Times") %>%
+  <strong>fontsize</strong>(i = 2, size = 14) %>%
+  <strong>color</strong>(i = 2, color = "red)
+</code></pre>
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">inside  <- fp_border(color = "gray")
+outside <- fp_border(color = "orange", 
+             width = 2)
+</code></pre>
+
+]
+
+.col-xs-6[
+
+```{r, echo = FALSE}
+x %>%
+  bold(i = 2) %>%
+  italic(i = 2) %>%
+  font(i = 2, fontname = "Times") %>%
+  fontsize(i = 2, size = 14) %>%
+  color(i = 2, color = "red")
+```
+
+]
+
+]
+
+
+---
+
+## Formats
+
+
+.row[
+
+.col-xs-12[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">x <- head(quakes) %>% flextable() %>% theme_box()
+</code></pre>
+
+```{r, echo = FALSE}
+x <- head(quakes) %>% flextable() %>% theme_box()
+````
+
+]
+
+]
+
+.row[
+
+.col-xs-6[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">x %>%
+  <strong>bold</strong>(i = 2) %>%
+  <strong>italic</strong>(i = 2) %>%
+  <strong>font</strong>(i = 2, fontname = "Times") %>%
+  <strong>fontsize</strong>(i = 2, size = 14) %>%
+  <strong>color</strong>(i = 2, color = "red)
+</code></pre>
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">inside  <- fp_border(color = "gray")
+outside <- fp_border(color = "orange", 
+             width = 2)
+</code></pre>
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">x %>%
+  <strong>border_outer</strong>(border = <em>outside</em>)
+</code></pre>
+
+]
+
+.col-xs-6[
+
+```{r, echo = FALSE}
+x %>%
+  bold(i = 2) %>%
+  italic(i = 2) %>%
+  font(i = 2, fontname = "Times") %>%
+  fontsize(i = 2, size = 14) %>%
+  color(i = 2, color = "red") %>%
+  border_outer(border = outside)
+```
+
+]
+
+]
+
+---
+
+## Formats
+
+
+.row[
+
+.col-xs-12[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">x <- head(quakes) %>% flextable() %>% theme_box()
+</code></pre>
+
+```{r, echo = FALSE}
+x <- head(quakes) %>% flextable() %>% theme_box()
+````
+
+]
+
+]
+
+.row[
+
+.col-xs-6[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">x %>%
+  <strong>bold</strong>(i = 2) %>%
+  <strong>italic</strong>(i = 2) %>%
+  <strong>font</strong>(i = 2, fontname = "Times") %>%
+  <strong>fontsize</strong>(i = 2, size = 14) %>%
+  <strong>color</strong>(i = 2, color = "red)
+</code></pre>
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">inside  <- fp_border(color = "gray")
+outside <- fp_border(color = "orange", 
+             width = 2)
+</code></pre>
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">x %>%
+  <strong>border_outer</strong>(border = <em>outside</em>) %>%
+  <strong>border_inner</strong>(border = <em>inside</em>)
+</code></pre>
+
+]
+
+.col-xs-6[
+
+```{r, echo = FALSE}
+x %>%
+  bold(i = 2) %>%
+  italic(i = 2) %>%
+  font(i = 2, fontname = "Times") %>%
+  fontsize(i = 2, size = 14) %>%
+  color(i = 2, color = "red") %>%
+  border_outer(border = outside) %>%
+  border_inner(border = inside)
+```
+
+]
+
+]
+
+---
+
+## Formats
+
+
+.row[
+
+.col-xs-12[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">x <- head(quakes) %>% flextable() %>% theme_box()
+</code></pre>
+
+```{r, echo = FALSE}
+x <- head(quakes) %>% flextable() %>% theme_box()
+````
+
+]
+
+]
+
+.row[
+
+.col-xs-6[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">x %>%
+  <strong>bold</strong>(i = 2) %>%
+  <strong>italic</strong>(i = 2) %>%
+  <strong>font</strong>(i = 2, fontname = "Times") %>%
+  <strong>fontsize</strong>(i = 2, size = 14) %>%
+  <strong>color</strong>(i = 2, color = "red)
+</code></pre>
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">inside  <- fp_border(color = "gray")
+outside <- fp_border(color = "orange", 
+             width = 2)
+</code></pre>
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">x %>%
+  <strong>border_outer</strong>(border = <em>outside</em>) %>%
+  <strong>border_inner</strong>(border = <em>inside</em>) %>%
+  <strong>bg</strong>(i = ~ mag > 5, j = ~ lat + long,
+    bg = "#becde6")
+</code></pre>
+
+]
+
+.col-xs-6[
+
+```{r, echo = FALSE}
+x %>%
+  bold(i = 2) %>%
+  italic(i = 2) %>%
+  font(i = 2, fontname = "Times") %>%
+  fontsize(i = 2, size = 14) %>%
+  color(i = 2, color = "red") %>%
+  border_outer(border = outside) %>%
+  border_inner(border = inside) %>%
+  bg(i = ~ mag > 5, j = ~ lat + long, bg = "#becde6")
+```
+
+]
+
+]
+
+---
+
+## Formats
+
+
+.row[
+
+.col-xs-12[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">x <- head(quakes) %>% flextable() %>% theme_box()
+</code></pre>
+
+```{r, echo = FALSE}
+x <- head(quakes) %>% flextable() %>% theme_box()
+````
+
+]
+
+]
+
+.row[
+
+.col-xs-6[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">x %>%
+  <strong>bold</strong>(i = 2) %>%
+  <strong>italic</strong>(i = 2) %>%
+  <strong>font</strong>(i = 2, fontname = "Times") %>%
+  <strong>fontsize</strong>(i = 2, size = 14) %>%
+  <strong>color</strong>(i = 2, color = "red)
+</code></pre>
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">inside  <- fp_border(color = "gray")
+outside <- fp_border(color = "orange", 
+             width = 2)
+</code></pre>
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">x %>%
+  <strong>border_outer</strong>(border = <em>outside</em>) %>%
+  <strong>border_inner</strong>(border = <em>inside</em>) %>%
+  <strong>bg</strong>(i = ~ mag > 5, j = ~ lat + long,
+    bg = "#becde6")
+</code></pre>
+
+]
+
+.col-xs-6[
+
+```{r, echo = FALSE}
+x %>%
+  bold(i = 2) %>%
+  italic(i = 2) %>%
+  font(i = 2, fontname = "Times") %>%
+  fontsize(i = 2, size = 14) %>%
+  color(i = 2, color = "red") %>%
+  border_outer(border = outside) %>%
+  border_inner(border = inside) %>%
+  bg(i = ~ mag > 5, j = ~ lat + long, bg = "#becde6")
+```
+
+]
+
+]
+
+.marker-writting[
+Others formatting functions : align, padding, rotate, etc...
+]

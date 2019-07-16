@@ -1,0 +1,43 @@
+---
+title: "flextable package"
+subtitle: "a grammar to produce tabular reporting from R"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: ['default', 'static/ardata-remark.css']
+---
+
+---
+
+## Write poetry with `compose`
+
+![](./static/img/flextable_compose1.svg)
+
+
+---
+
+## Write poetry with `compose`
+
+
+![](./static/img/flextable_compose2.svg)
+
+---
+
+## Write poetry with `compose`
+
+
+![](./static/img/flextable_compose3.svg)
+
+---
+
+## Write poetry with `compose`
+
+
+![](./static/img/flextable_compose4.svg)
+
+---
+
+## Write poetry with `compose`
+
+
+![](./static/img/flextable_compose5.svg)

@@ -1,0 +1,13 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.html
+!flextable.html
+static
+.html
+flextable_files
+flextable_pdf_files
+outputs
+*.R
+*.html

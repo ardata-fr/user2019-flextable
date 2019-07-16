@@ -1,0 +1,397 @@
+---
+title: "flextable package"
+subtitle: "cell_merging"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: ['default', 'static/ardata-remark.css']
+---
+
+````{r, echo = FALSE}
+library(magrittr)
+library(officer)
+library(flextable)
+theme_merge <- function(x) {
+  blue_roboto <- fp_text(
+    color = "#00aeef",
+    font.family = "Roboto",
+    font.size = 12
+  )
+  x <- x %>%
+    border_remove() %>%
+    style(
+      part = "header", 
+      pr_t = blue_roboto
+    ) %>%
+    border_inner(border = fp_border(color = "gray")) %>%
+    border_outer(border = fp_border(color = "#1f1f2e", width = 2)) %>%
+    hline_bottom(part = "header", border = fp_border()) %>%
+    hline_top(part = "body", border = fp_border()) %>%
+    align(align = "center", part = "all") %>%
+    italic(j = ~ id + Age ) %>% 
+    color(j = ~ id, color = "gray") %>% width(j = ~ id, width = 0.3) %>%
+    #bg(j = startsWith(colnames(study), "Day"),
+    # bg = c(ifelse(study[,startsWith(colnames(study), "Day")] == 1, "#c2f0c2", "#ffb3b3"))) %>%
+    #color(i = ~ Gender == "Male", j = ~ Gender, color = "#2b1fee") %>%
+    #color(i = ~ Gender == "Female", j = ~ Gender, color = "#e353e5") %>%
+    fix_border_issues()
+  x
+}
+study <- data.frame(
+  `id` = 1:12,
+  Age = c(rep("<20 years", 3), rep("21-40 years", 3), rep("41-60 years", 3), rep(">60 years", 3)),
+  Gender = c(rep(c("Male", "Male", "Female", "Male", "Female", "Female"), 2)),
+  `Day 1` = sample(c(0L,1L), 12, T),
+  `Day 2` = sample(c(0L,1L), 12, T),
+  `Day 3` = sample(c(0L,1L), 12, T),
+  `Day 4` = sample(c(0L,1L), 12, T),
+  stringsAsFactors = FALSE
+)
+````
+
+---
+
+## Cell merging
+
+.row[
+
+.col-xs-6[
+
+````{r, echo = TRUE, eval = FALSE}
+dat <- data.frame(
+  letters1 = c("a", "b", "b", "c"), 
+  letters2 = c("d", "e", "b", "b"), 
+  number = 1:4, 
+  stringsAsFactors = FALSE
+)
+````
+
+]
+
+]
+
+
+---
+
+## Cell merging
+
+.row[
+
+.col-xs-6[
+
+````{r, echo = TRUE, eval = FALSE}
+dat <- data.frame(
+  letters1 = c("a", "b", "b", "c"), 
+  letters2 = c("d", "e", "b", "b"), 
+  number = 1:4, 
+  stringsAsFactors = FALSE
+)
+
+x <- flextable(dat) %>%
+  theme_box()
+x
+````
+
+]
+
+.col-xs-6[
+
+````{r, echo = FALSE, eval = TRUE}
+dat <- data.frame(
+  letters1 = c("a", "b", "b", "c"), 
+  letters2 = c("d", "e", "b", "b"), 
+  number = 1:4, 
+  stringsAsFactors = FALSE
+)
+
+x <- flextable(dat) %>%
+  theme_box()
+x
+````
+
+]
+
+]
+
+
+---
+
+## Cell merging
+
+.row[
+
+.col-xs-6[
+
+````{r, echo = TRUE, eval = FALSE}
+dat <- data.frame(
+  letters1 = c("a", "b", "b", "c"), 
+  letters2 = c("d", "e", "b", "b"), 
+  number = 1:4, 
+  stringsAsFactors = FALSE
+)
+
+x <- flextable(dat) %>%
+  theme_box()
+x
+````
+
+]
+
+.col-xs-6[
+
+````{r, echo = FALSE, eval = TRUE}
+dat <- data.frame(
+  letters1 = c("a", "b", "b", "c"), 
+  letters2 = c("d", "e", "b", "b"), 
+  number = 1:4, 
+  stringsAsFactors = FALSE
+)
+
+x <- flextable(dat) %>%
+  theme_box()
+x
+````
+
+]
+
+]
+
+
+.row[
+
+.col-xs-6[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">x %>% 
+  <strong>merge_v()</strong>
+</code></pre>
+
+````{r, echo = FALSE}
+x %>% merge_v()
+````
+
+.note-writting[
+NB: Selector `j` can be used with `merge_v`
+]
+
+]
+
+]
+
+---
+
+## Cell merging
+
+
+.row[
+
+.col-xs-6[
+
+````{r, echo = TRUE, eval = FALSE}
+dat <- data.frame(
+  letters1 = c("a", "b", "b", "c"), 
+  letters2 = c("d", "e", "b", "b"), 
+  number = 1:4, 
+  stringsAsFactors = FALSE
+)
+
+x <- flextable(dat) %>%
+  theme_box()
+x
+````
+
+]
+
+.col-xs-6[
+
+````{r, echo = FALSE, eval = TRUE}
+dat <- data.frame(
+  letters1 = c("a", "b", "b", "c"), 
+  letters2 = c("d", "e", "b", "b"), 
+  number = 1:4, 
+  stringsAsFactors = FALSE
+)
+
+x <- flextable(dat) %>%
+  theme_box()
+x
+````
+
+]
+
+]
+
+
+.row[
+
+.col-xs-6[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">x %>% 
+  <strong>merge_v()</strong>
+</code></pre>
+
+````{r, echo = FALSE}
+x %>% merge_v()
+````
+
+.note-writting[
+NB: Selector `j` can be used with `merge_v`
+]
+
+]
+
+.col-xs-6[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">x %>% 
+  <strong>merge_h()</strong>
+</code></pre>
+
+````{r, echo = FALSE}
+x %>% merge_h()
+````
+
+.note-writting[
+NB: Selector `i` can be used with `merge_h`
+]
+
+]
+
+]
+
+---
+
+## Cell merging
+
+.row[
+.col-xs-12[
+
+````{r, echo = TRUE, eval = TRUE}
+study <- data.frame(
+  `id` = 1:12,
+  Age = c(rep("<20 years", 3), rep("21-40 years", 3), rep("41-60 years", 3), rep(">60 years", 3)),
+  Gender = c(rep(c("Male", "Male", "Female", "Male", "Female", "Female"), 2)),
+  `Day 1` = sample(c(0L,1L), 12, T),
+  `Day 2` = sample(c(0L,1L), 12, T),
+  `Day 3` = sample(c(0L,1L), 12, T),
+  `Day 4` = sample(c(0L,1L), 12, T),
+  stringsAsFactors = FALSE
+)
+````
+
+]
+]
+
+---
+
+## Cell merging
+
+.row[
+
+.col-xs-6[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">x <- flextable(study)
+</code></pre>
+
+]
+
+.col-xs-6[
+
+````{r, echo = FALSE, eval = TRUE}
+x <- flextable(study)
+x
+````
+
+]
+]
+
+---
+
+## Cell merging
+
+.row[
+
+.col-xs-6[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">x <- flextable(study) %>% 
+  theme_merge()
+</code></pre>
+
+]
+
+.col-xs-6[
+
+````{r, echo = FALSE, eval = TRUE}
+x <- flextable(study) %>% 
+  theme_merge()
+x
+````
+
+]
+]
+
+---
+
+## Cell merging
+
+.row[
+
+.col-xs-6[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">x <- flextable(study) %>% 
+  theme_merge() %>%
+  <strong>merge_v</strong>(j = ~ Age + Gender)
+</code>
+</pre>
+
+]
+
+.col-xs-6[
+
+````{r, echo = FALSE, eval = TRUE}
+x <- flextable(study) %>% 
+  theme_merge %>%
+  merge_v(j = ~ Age + Gender) %>%
+  fix_border_issues()
+x
+````
+
+]
+]
+
+---
+
+## Cell merging
+
+.row[
+
+.col-xs-6[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">x <- flextable(study) %>% 
+  theme_merge() %>% 
+  <strong>merge_v</strong>(j = ~ Age + Gender) %>%
+  <strong>merge_h</strong>()
+</code>
+</pre>
+
+]
+
+.col-xs-6[
+
+````{r, echo = FALSE, eval = TRUE}
+x <- flextable(study) %>% 
+  theme_merge %>% 
+  merge_v(j = ~ Age + Gender) %>%
+  merge_h() %>%
+  fix_border_issues()
+x
+````
+
+]
+
+]

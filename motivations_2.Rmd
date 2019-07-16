@@ -1,0 +1,132 @@
+---
+title: "flextable package"
+subtitle: "a grammar to produce tabular reporting from R"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: ['default', 'static/ardata-remark.css']
+---
+
+---
+
+## Motivations 
+
+.marker-writting[
+Provide an R grammar for tabular reporting
+]
+
+.row[
+
+.col-xs-6[
+
+```{r}
+library(flextable)
+library(magrittr)
+ft <- head(iris, n = 3) %>% 
+  flextable() %>% 
+  color(color = "#006699", part = "header") %>% 
+  colformat_num(
+    col_keys = c("Sepal.Length", "Sepal.Width",
+                 "Petal.Length", "Petal.Width"),
+    digits = 1)
+```
+
+]
+
+.col-xs-6[
+
+```{r echo=FALSE}
+ft
+```
+
+
+]
+]
+
+
+.row[
+
+.col-xs-6[
+
+
+.marker-writting[
+Enable its usage in R Markdown documents with outputs to 
+]
+
+.row[
+.col-xs-3[
+<img src="https://www.ardata.fr/img/illustrations/html5.svg" width="50">
+
+]
+.col-xs-3[
+
+<img src="https://www.ardata.fr/img/illustrations/word.svg" width="50">
+
+]
+.col-xs-3[
+
+<img src="https://www.ardata.fr/img/illustrations/powerpoint.svg" width="50">
+
+]
+.col-xs-3[
+
+<img src="https://www.ardata.fr/img/illustrations/pdf.svg" width="50">
+
+]
+]
+<pre>
+<code class="r hljs remark-code">
+---
+title: RMD document with iris as a flextable
+---
+
+```r
+flextable::flextable(iris)
+```
+
+</code>
+</pre>
+
+
+]
+
+.col-xs-6[
+
+
+.marker-writting[
+Enable creation of simple and complex tables
+]
+
+```{r echo=FALSE}
+library(flextable)
+library(data.table)
+library(magrittr)
+data_CO2 <- dcast(as.data.table(CO2), 
+  Treatment + conc ~ Type, value.var = "uptake", fun.aggregate = mean)
+data_CO2 <- as_grouped_data(x = data_CO2, groups = c("Treatment"))
+zz <- as_flextable( data_CO2 ) %>% 
+  bold(j = 1, i = ~ !is.na(Treatment), bold = TRUE, part = "body" ) %>% 
+  bold(part = "header", bold = TRUE ) %>% 
+  width(width = 1.5)
+zz <- zz %>% 
+  compose(i = ~ is.na(Treatment), j = "Quebec", 
+          value = as_paragraph(
+            minibar(Quebec), 
+            " ", 
+            as_chunk(Quebec, formater = function(x) sprintf("%.01f", x))
+            )
+          ) %>% 
+  compose(i = ~ is.na(Treatment), j = "Mississippi", 
+          value = as_paragraph( minibar(Mississippi), 
+                                " ",
+                                as_chunk(Mississippi, 
+                                         formater = function(x) sprintf("%.01f", x) )
+                                )
+          ) %>% 
+  align(j = 2:3, align = "left")
+zz
+```
+
+]
+]
+

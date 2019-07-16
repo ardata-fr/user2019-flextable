@@ -1,0 +1,417 @@
+---
+title: "flextable package"
+subtitle: "a grammar to produce tabular reporting from R"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: ['default', 'static/ardata-remark.css']
+---
+
+````{r, eval = TRUE, echo = FALSE}
+library(flextable)
+library(magrittr)
+library(officer)
+````
+
+---
+
+## Selectors
+
+
+.row[
+
+.col-xs-6[
+
+.marker-writting[
+You can select row(s), column(s) or cell(s) of any part to modify its :
+
+* content
+* layout
+* format
+
+]
+]
+]
+
+---
+
+## Selectors
+
+
+.row[
+
+.col-xs-6[
+
+.marker-writting[
+You can select row(s), column(s) or cell(s) of any part to modify its :
+
+* content
+* layout
+* format
+
+]
+]
+]
+
+.row[
+
+.col-xs-6[
+
+<pre>
+<code class="r hljs remark-code"><strong>cols</strong> <- ~ Height + Volume
+
+flextable(head(trees)) %>%
+  theme_box()
+</code></pre>
+
+```{r, echo = FALSE}
+cols <- ~ Height + Volume
+
+head(trees, 5) %>% flextable() %>% theme_box()
+```
+
+]
+
+]
+
+---
+
+## Selectors
+
+
+.row[
+
+.col-xs-6[
+
+.marker-writting[
+You can select row(s), column(s) or cell(s) of any part to modify its :
+
+* content
+* layout
+* format
+
+]
+]
+]
+
+.row[
+
+.col-xs-6[
+
+<pre>
+<code class="r hljs remark-code"><strong>cols</strong> <- ~ Height + Volume
+
+flextable(head(trees)) %>%
+  theme_box() %>%
+  bg(bg = "#475f77", <strong>j = cols</strong>) %>%
+  color(color = "white", <strong>j = cols</strong>)
+</code></pre>
+
+```{r, echo = FALSE}
+cols <- ~ Height + Volume
+
+head(trees, 5) %>% flextable() %>% theme_box() %>%
+  bg(bg = "#475f77", j = cols) %>%
+  color(color = "white", j = cols)
+```
+
+]
+
+]
+
+---
+
+## Selectors
+
+
+.row[
+
+.col-xs-6[
+
+.marker-writting[
+You can select row(s), column(s) or cell(s) of any part to modify its :
+
+* content
+* layout
+* format
+
+]
+]
+
+.col-xs-6[
+
+.marker-writting[
+Any function contains parameters `j` and `i`. They can be specified with :
+
+* indices
+* formula
+* character names
+
+]
+
+]
+]
+
+.row[
+
+.col-xs-6[
+
+<pre>
+<code class="r hljs remark-code"><strong>cols</strong> <- ~ Height + Volume
+
+flextable(head(trees)) %>%
+  theme_box() %>%
+  bg(bg = "#475f77", <strong>j = cols</strong>) %>%
+  color(color = "white", <strong>j = cols</strong>)
+</code></pre>
+
+```{r, echo = FALSE}
+cols <- ~ Height + Volume
+
+head(trees, 5) %>% flextable() %>% theme_box() %>%
+  bg(bg = "#475f77", j = cols) %>%
+  color(color = "white", j = cols)
+```
+
+]
+
+]
+
+---
+
+## Selectors
+
+
+.row[
+
+.col-xs-6[
+
+.marker-writting[
+You can select row(s), column(s) or cell(s) of any part to modify its :
+
+* content
+* layout
+* format
+
+]
+]
+
+.col-xs-6[
+
+.marker-writting[
+Any function contains parameters `j` and `i`. They can be specified with :
+
+* indices
+* formula
+* character names
+
+]
+
+]
+]
+
+.row[
+
+.col-xs-6[
+
+<pre>
+<code class="r hljs remark-code"><strong>cols</strong> <- ~ Height + Volume
+
+flextable(head(trees)) %>%
+  theme_box() %>%
+  bg(bg = "#475f77", <strong>j = cols</strong>) %>%
+  color(color = "white", <strong>j = cols</strong>)
+</code></pre>
+
+```{r, echo = FALSE}
+cols <- ~ Height + Volume
+
+head(trees, 5) %>% flextable() %>% theme_box() %>%
+  bg(bg = "#475f77", j = cols) %>%
+  color(color = "white", j = cols)
+```
+
+]
+
+.col-xs-6[
+
+<pre>
+<code class="r hljs remark-code"><strong>rows</strong> <- ~ Height > 67 & Volume < 19
+
+flextable(head(trees)) %>% 
+  theme_box()
+</code></pre>
+
+```{r, echo = FALSE}
+rows <- ~ Height > 67 & Volume < 19
+
+head(trees, 5) %>% flextable() %>% theme_box()
+```
+
+]
+]
+
+---
+
+## Selectors
+
+
+.row[
+
+.col-xs-6[
+
+.marker-writting[
+You can select row(s), column(s) or cell(s) of any part to modify its :
+
+* content
+* layout
+* format
+
+]
+]
+
+.col-xs-6[
+
+.marker-writting[
+Any function contains parameters `j` and `i`. They can be specified with :
+
+* indices
+* formula
+* character names
+
+]
+
+]
+
+]
+
+.row[
+
+.col-xs-6[
+
+<pre>
+<code class="r hljs remark-code"><strong>cols</strong> <- ~ Height + Volume
+
+flextable(head(trees)) %>%
+  theme_box() %>%
+  bg(bg = "#475f77", <strong>j = cols</strong>) %>%
+  color(color = "white", <strong>j = cols</strong>)
+</code></pre>
+
+```{r, echo = FALSE}
+cols <- ~ Height + Volume
+
+head(trees, 5) %>% flextable() %>% theme_box() %>%
+  bg(bg = "#475f77", j = cols) %>%
+  color(color = "white", j = cols)
+```
+
+]
+
+.col-xs-6[
+
+<pre>
+<code class="r hljs remark-code"><strong>rows</strong> <- ~ Height > 67 & Volume < 19
+
+flextable(head(trees)) %>% 
+  theme_box() %>%
+  bg(bg = "#475f77", <strong>i = rows</strong>) %>%
+  color(color = "white", <strong>i = rows</strong>)
+</code></pre>
+
+```{r, echo = FALSE}
+rows <- ~ Height > 67 & Volume < 19
+
+head(trees, 5) %>% flextable() %>% theme_box() %>%
+  bg(bg = "#475f77", i = rows) %>%
+  color(color = "white", i = rows)
+```
+
+]
+]
+
+
+---
+
+## Selectors
+
+
+.row[
+
+.col-xs-6[
+
+.marker-writting[
+You can select row(s), column(s) or cell(s) of any part to modify its :
+
+* content
+* layout
+* format
+
+]
+]
+
+
+.col-xs-6[
+
+.marker-writting[
+Any function contains parameters `j` and `i`. They can be specified with :
+
+* indices
+* formula
+* character names
+
+]
+]
+]
+
+.row[
+
+.col-xs-6[
+
+<pre>
+<code class="r hljs remark-code"><strong>cols</strong> <- ~ Height + Volume
+
+flextable(head(trees)) %>%
+  theme_box() %>%
+  bg(bg = "#475f77", <strong>j = cols</strong>) %>%
+  color(color = "white", <strong>j = cols</strong>)
+</code></pre>
+
+```{r, echo = FALSE}
+cols <- ~ Height + Volume
+
+head(trees, 5) %>% flextable() %>% theme_box() %>%
+  bg(bg = "#475f77", j = cols) %>%
+  color(color = "white", j = cols)
+```
+
+
+]
+
+
+.col-xs-6[
+
+<pre>
+<code class="r hljs remark-code"><strong>rows</strong> <- ~ Height > 67 & Volume < 19
+
+flextable(head(trees)) %>% 
+  theme_box() %>%
+  bg(bg = "#475f77", <strong>i = rows</strong>) %>%
+  color(color = "white", <strong>i = rows</strong>)
+</code></pre>
+
+```{r, echo = FALSE}
+rows <- ~ Height > 67 & Volume < 19
+
+head(trees, 5) %>% flextable() %>% theme_box() %>%
+  bg(bg = "#475f77", i = rows) %>%
+  color(color = "white", i = rows)
+```
+
+]
+
+]
+
+.note-writting[
+NB: You can use `%>%` to combine multiple statement
+]

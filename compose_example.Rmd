@@ -1,0 +1,439 @@
+---
+title: "flextable package"
+subtitle: "part compose example"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: ['default', 'static/ardata-remark.css']
+---
+
+---
+
+## Write poetry with `compose`
+
+.marker-writting[
+For the next example we will reproduce this table :
+]
+
+![](./static/img/atp_table_original.png)
+
+.note-writting[
+Source : https://www.atptour.com/en/stats/
+]
+
+---
+
+## Write poetry with `compose`
+
+.marker-writting[
+The data.frame we start from :
+]
+
+````{r, eval = TRUE, echo = FALSE}
+x <- data.frame(
+  Rank = 1:10,
+  Player = c("Roger Federer", "Lleyton Hewitt", "Feliciano Lopez", "Ivo Karlovic", "Andy Murray",
+             "Pete Sampras", "Greg Rusedski", "Tim Henman", "Novak Djokovic", "Andy Roddick"),
+  Percentage = c(92.63, 85.29, 89.86, 94.87, 88.89, 92.66, 90.33, 83.77, 89.12, 92.76),
+  `Games Won` = c(2739, 1740, 1684, 1645, 1528, 1478, 1476, 1461, 1442, 1410),
+  `Total Games` = c(2957, 2040, 1874, 1734, 1719, 1595, 1634, 1744, 1618, 1520),
+  Matches = c(205, 149, 122, 113, 121, 105, 116, 110, 106, 103),
+  head = c(
+    "./static/img/players/federer_head.png",
+    "./static/img/players/hewitt_head.png",
+    "./static/img/players/lopez_head.png",
+    "./static/img/players/karlovic_head.png",
+    "./static/img/players/murray_head.png",
+    "./static/img/players/sampras_head.png",
+    "./static/img/players/rusedski_head.png",
+    "./static/img/players/henman_head.png",
+    "./static/img/players/djokovic_head.png",
+    "./static/img/players/roddick_head.png"
+  ),
+  link = c(
+    "https://www.atptour.com/en/players/roger-federer/f324/overview",
+    "https://www.atptour.com/en/players/lleyton-hewitt/h432/overview",
+    "https://www.atptour.com/en/players/feliciano-lopez/l397/overview",
+    "https://www.atptour.com/en/players/ivo-karlovic/k336/overview",
+    "https://www.atptour.com/en/players/andy-murray/mc10/overview",
+    "https://www.atptour.com/en/players/pete-sampras/s402/overview",
+    "https://www.atptour.com/en/players/greg-rusedski/r237/overview",
+    "https://www.atptour.com/en/players/tim-henman/h336/overview",
+    "https://www.atptour.com/en/players/novak-djokovic/d643/overview",
+    "https://www.atptour.com/en/players/andy-roddick/r485/overview"
+  ),
+  flag = c(
+    "./static/img/flags/sui.svg",
+    "./static/img/flags/aus.svg",
+    "./static/img/flags/esp.svg",
+    "./static/img/flags/cro.svg",
+    "./static/img/flags/gbr.svg",
+    "./static/img/flags/usa.svg",
+    "./static/img/flags/gbr.svg",
+    "./static/img/flags/gbr.svg",
+    "./static/img/flags/srb.svg",
+    "./static/img/flags/usa.svg"
+  ),
+  stringsAsFactors = FALSE
+)
+head(x, n = 4)
+````
+
+---
+
+## Write poetry with `compose`
+
+
+.row[
+
+.col-xs-5[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">flextable(x,
+  col_keys = c(
+    "Player", "Percentage", 
+    "Games.Won", "Total.Games", "Matches"
+  )
+)
+</code></pre>
+
+]
+
+.col-xs-7[
+
+````{r, eval = TRUE, echo = FALSE}
+flextable(x,
+  col_keys = c(
+    "Player", "Percentage", 
+    "Games.Won", "Total.Games", "Matches"
+  )
+)
+````
+
+]
+]
+
+---
+
+## Write poetry with `compose`
+
+
+.row[
+
+.col-xs-5[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">flextable(x,
+  col_keys = c(
+    "Player", "Percentage", 
+    "Games.Won", "Total.Games", "Matches"
+  )
+) %>% 
+theme_atp()
+</code></pre>
+
+]
+
+.col-xs-7[
+
+````{r, eval = TRUE, echo = FALSE}
+flextable(x,
+  col_keys = c(
+    "Player", "Percentage", 
+    "Games.Won", "Total.Games", "Matches"
+  )
+) %>% 
+theme_atp()
+````
+
+]
+]
+
+---
+
+## Write poetry with `compose`
+
+
+.row[
+
+.col-xs-5[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">flextable(x,
+  col_keys = c(
+    "Player", "Percentage", 
+    "Games.Won", "Total.Games", "Matches"
+  )
+) %>% 
+theme_atp() %>%
+<strong>compose</strong>(
+  j = "Player",
+  value = <strong>as_paragraph</strong>(
+    ...
+  )
+)
+</code></pre>
+
+]
+
+.col-xs-7[
+
+````{r, eval = TRUE, echo = FALSE}
+flextable(x,
+  col_keys = c(
+    "Player", "Percentage", 
+    "Games.Won", "Total.Games", "Matches"
+  )
+) %>% 
+theme_atp()
+````
+
+]
+]
+
+---
+
+## Write poetry with `compose`
+
+
+.row[
+
+.col-xs-5[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">flextable(x,
+  col_keys = c(
+    "Player", "Percentage", 
+    "Games.Won", "Total.Games", "Matches"
+  )
+) %>% 
+theme_atp() %>%
+<strong>compose</strong>(
+  j = "Player",
+  value = <strong>as_paragraph</strong>(
+    <strong>as_chunk</strong>(
+      x = Rank, 
+      formater = function(x) paste(x, "  ")
+    )
+  )
+)
+</code></pre>
+
+]
+
+.col-xs-7[
+
+````{r, eval = TRUE, echo = FALSE}
+flextable(x,
+  col_keys = c(
+    "Player", "Percentage", 
+    "Games.Won", "Total.Games", "Matches"
+  )
+) %>% 
+theme_atp() %>%
+compose(
+  j = "Player",
+  value = as_paragraph(
+    as_chunk(
+      x = Rank, 
+      formater = function(x) paste(x, "  ")
+    )
+  )
+)
+````
+
+]
+]
+
+---
+
+## Write poetry with `compose`
+
+
+.row[
+
+.col-xs-5[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">flextable(x,
+  col_keys = c(
+    "Player", "Percentage", 
+    "Games.Won", "Total.Games", "Matches"
+  )
+) %>% 
+theme_atp() %>%
+<strong>compose</strong>(
+  j = "Player",
+  value = <strong>as_paragraph</strong>(
+    <strong>as_chunk</strong>(
+      x = Rank, 
+      formater = function(x) paste(x, "  ")
+    ),
+    <strong>as_image</strong>(src = head, height = 0.5)
+  )
+)
+</code></pre>
+
+]
+
+.col-xs-7[
+
+````{r, eval = TRUE, echo = FALSE}
+flextable(x,
+  col_keys = c(
+    "Player", "Percentage", 
+    "Games.Won", "Total.Games", "Matches"
+  )
+) %>% 
+theme_atp() %>%
+compose(
+  j = "Player",
+  value = as_paragraph(
+    as_chunk(
+      x = Rank, 
+      formater = function(x) paste(x, "  ")
+    ),
+    as_image(src = head, height = 0.5)
+  )
+)
+````
+
+]
+]
+
+
+---
+
+## Write poetry with `compose`
+
+
+.row[
+
+.col-xs-5[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">flextable(x,
+  col_keys = c(
+    "Player", "Percentage", 
+    "Games.Won", "Total.Games", "Matches"
+  )
+) %>% 
+theme_atp() %>%
+<strong>compose</strong>(
+  j = "Player",
+  value = <strong>as_paragraph</strong>(
+    <strong>as_chunk</strong>(
+      x = Rank, 
+      formater = function(x) paste(x, "  ")
+    ),
+    <strong>as_image</strong>(src = head, height = 0.5),
+    <strong>as_image</strong>(src = flag)
+  )
+)
+</code></pre>
+
+]
+
+.col-xs-7[
+
+````{r, eval = TRUE, echo = FALSE}
+flextable(x,
+  col_keys = c(
+    "Player", "Percentage", 
+    "Games.Won", "Total.Games", "Matches"
+  )
+) %>% 
+theme_atp() %>%
+compose(
+  j = "Player",
+  value = as_paragraph(
+    as_chunk(
+      x = Rank, 
+      formater = function(x) paste(x, "  ")
+    ),
+    as_image(src = head, height = 0.5),
+    as_image(src = flag)
+  )
+)
+````
+
+]
+]
+
+
+---
+
+## Write poetry with `compose`
+
+
+.row[
+
+.col-xs-5[
+
+<pre class = "nomtop nombottom">
+<code class="r remark-code">flextable(x,
+  col_keys = c(
+    "Player", "Percentage", 
+    "Games.Won", "Total.Games", "Matches"
+  )
+) %>% 
+theme_atp() %>%
+<strong>compose</strong>(
+  j = "Player",
+  value = <strong>as_paragraph</strong>(
+    <strong>as_chunk</strong>(
+      x = Rank, 
+      formater = function(x) paste(x, "  ")
+    ),
+    <strong>as_image</strong>(src = head, height = 0.5),
+    <strong>as_image</strong>(src = flag),
+    <strong>hyperlink_text</strong>(
+      x = Player, 
+      url = link, 
+      props = <strong>fp_text</strong>(
+        color = "#00aeef",
+        font.family = "Roboto",
+        font.size = 10
+      )
+    )
+  )
+)
+</code></pre>
+
+]
+
+.col-xs-7[
+
+````{r, eval = TRUE, echo = FALSE}
+flextable(x,
+  col_keys = c(
+    "Player", "Percentage", 
+    "Games.Won", "Total.Games", "Matches"
+  )
+) %>% 
+theme_atp() %>%
+compose(
+  j = "Player",
+  value = as_paragraph(
+    as_chunk(
+      x = Rank, 
+      formater = function(x) paste(x, "  ")
+    ),
+    as_image(src = head, height = 0.5),
+    as_image(src = flag),
+    hyperlink_text(
+      x = Player, 
+      url = link, 
+      props = fp_text(
+        color = "#00aeef",
+        font.family = "Roboto",
+        font.size = 10
+      )
+    )
+  )
+)
+````
+
+]
+]
+
